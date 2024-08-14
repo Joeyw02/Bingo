@@ -6,5 +6,5 @@ CUDA_DEFINES =
 
 CUDA_INCLUDES = -I/home/pw346/Bingo/include
 
-CUDA_FLAGS =  -arch=sm_70 -std=c++17
+CUDA_FLAGS =  -arch=sm_70 -O3 -std=c++11
 

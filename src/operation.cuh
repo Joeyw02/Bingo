@@ -219,16 +219,16 @@ __global__ void randomWalkKernel(int gId,int n, NodeData *ndD, int *rwD,ull seed
         if(u<=ed){
             int *rw=rwD+(u-bg)*LEN;
             (*rw)=u;
-            /*for(int j=1;j<LEN&&u!=-1;++j){
-                u=ndD[u].sample(rdG/*,abc,bbc);
+            for(int j=1;j<LEN&&u!=-1;++j){
+                u=ndD[u].sample(rdG);
                 (*(++rw))=u;
-            }*/
-            for(int j=1;u!=-1;++j){
-                u=ndD[u].sample(rdG/*,abc,bbc*/);
+            }
+            /*for(int j=1;u!=-1;++j){
+                u=ndD[u].sample(rdG,abc,bbc);
                 if(j<80)++rw;
                 (*(rw))=u;
                 if(rdG.getRandomNumber()<TP)break;
-            }
+            }*/
 
         }
         __syncwarp();
