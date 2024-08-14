@@ -7,7 +7,7 @@
 #define Q 2
 const int BEG=0;
 const int BITS=LOGT-BEG;
-const int LEN=1;
+const int LEN=80;
 const int CPUTHD=16;
 const int GPUS=1;
 const bool NODE2VEC=0;

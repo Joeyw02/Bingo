@@ -9,7 +9,7 @@
 #include"utils.cuh"
 using namespace std;
 CPURand r;
-int n,batchSize=1000000;
+int n,batchSize=100000;
 int *d,*sizeManager;
 vector<EdgeData>edgeData;
 bool buffer=0;
@@ -149,13 +149,13 @@ void randomWalk(){
     for(int g=0;g<GPUS;++g){
         cudaSetDevice(g);
         //if(BUFFER)resetKernel<<<BLKSZ,THDSZ>>>(n,ndD[g]);
-        if(rwD[g]==NULL)cudaMalloc((void **)&rwD[g],(LEN*(100000/GPUS+1))*sizeof(int));
+        if(rwD[g]==NULL)cudaMalloc((void **)&rwD[g],(LEN*(n/GPUS+1))*sizeof(int));
         HE(cudaGetLastError());
         
    //     for(int t=0;t<2;++t){
            // GPUTimer gT;gT.init();//cerr<<g<<" "<<n<<endl;
             cudaDeviceSynchronize();
-            randomWalkKernel<<<BLKSZ,THDSZ>>>(g,100000,ndD[g],rwD[g],((ull)new char)+g*13/*abc,bbc*/);
+            randomWalkKernel<<<BLKSZ,THDSZ>>>(g,n,ndD[g],rwD[g],((ull)new char)+g*13/*abc,bbc*/);
             cudaDeviceSynchronize();
             HE(cudaGetLastError());
             //randomWalkKernel<<<BLKSZ,THDSZ>>>(1,n,ndD[g],rwD[g],((ull)new char)+g*13/*abc,bbc*/);
