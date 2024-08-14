@@ -1,0 +1,1 @@
+nvcc -Xcompiler="-fopenmp" -O3 -o a deepwalk.cu
