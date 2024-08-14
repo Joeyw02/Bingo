@@ -1,0 +1,1 @@
+/usr/local/cuda/bin/nvcc -forward-unknown-to-host-compiler  -arch=sm_70 -Xcompiler=-fPIC -Wno-deprecated-gpu-targets -shared -dlink CMakeFiles/MyExecutable.dir/src/deepwalk.cu.o -o CMakeFiles/MyExecutable.dir/cmake_device_link.o   /usr/lib64/libpthread.a -lcudadevrt -lcudart_static -lrt -lpthread -ldl 
