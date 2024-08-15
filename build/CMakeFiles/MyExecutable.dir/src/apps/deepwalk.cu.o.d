@@ -1,4 +1,4 @@
-CMakeFiles/MyExecutable.dir/src/deepwalk.cu.o : /home/pw346/Bingo/src/deepwalk.cu \
+CMakeFiles/MyExecutable.dir/src/apps/deepwalk.cu.o : /home/pw346/Bingo/src/apps/deepwalk.cu \
     /usr/include/stdc-predef.h \
     /usr/local/cuda/bin/../targets/x86_64-linux/include/cuda_runtime.h \
     /usr/local/cuda/bin/../targets/x86_64-linux/include/crt/host_config.h \
@@ -257,6 +257,7 @@ CMakeFiles/MyExecutable.dir/src/deepwalk.cu.o : /home/pw346/Bingo/src/deepwalk.c
     /usr/include/c++/11/cstring \
     /usr/lib/gcc/x86_64-redhat-linux/11/include/omp.h \
     /home/pw346/Bingo/include/api.h \
+    /home/pw346/Bingo/include/apps.h \
     /home/pw346/Bingo/include/gpuMem.cuh \
     /home/pw346/Bingo/include/operation.cuh \
     /home/pw346/Bingo/include/type.h \

@@ -69,33 +69,49 @@ include CMakeFiles/MyExecutable.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/MyExecutable.dir/flags.make
 
-CMakeFiles/MyExecutable.dir/src/deepwalk.cu.o: CMakeFiles/MyExecutable.dir/flags.make
-CMakeFiles/MyExecutable.dir/src/deepwalk.cu.o: ../src/deepwalk.cu
-CMakeFiles/MyExecutable.dir/src/deepwalk.cu.o: CMakeFiles/MyExecutable.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pw346/Bingo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CUDA object CMakeFiles/MyExecutable.dir/src/deepwalk.cu.o"
-	/usr/local/cuda/bin/nvcc -forward-unknown-to-host-compiler $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -MD -MT CMakeFiles/MyExecutable.dir/src/deepwalk.cu.o -MF CMakeFiles/MyExecutable.dir/src/deepwalk.cu.o.d -x cu -dc /home/pw346/Bingo/src/deepwalk.cu -o CMakeFiles/MyExecutable.dir/src/deepwalk.cu.o
+CMakeFiles/MyExecutable.dir/src/apps/deepwalk.cu.o: CMakeFiles/MyExecutable.dir/flags.make
+CMakeFiles/MyExecutable.dir/src/apps/deepwalk.cu.o: ../src/apps/deepwalk.cu
+CMakeFiles/MyExecutable.dir/src/apps/deepwalk.cu.o: CMakeFiles/MyExecutable.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pw346/Bingo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CUDA object CMakeFiles/MyExecutable.dir/src/apps/deepwalk.cu.o"
+	/usr/local/cuda/bin/nvcc -forward-unknown-to-host-compiler $(CUDA_DEFINES) $(CUDA_INCLUDES) $(CUDA_FLAGS) -MD -MT CMakeFiles/MyExecutable.dir/src/apps/deepwalk.cu.o -MF CMakeFiles/MyExecutable.dir/src/apps/deepwalk.cu.o.d -x cu -dc /home/pw346/Bingo/src/apps/deepwalk.cu -o CMakeFiles/MyExecutable.dir/src/apps/deepwalk.cu.o
 
-CMakeFiles/MyExecutable.dir/src/deepwalk.cu.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CUDA source to CMakeFiles/MyExecutable.dir/src/deepwalk.cu.i"
+CMakeFiles/MyExecutable.dir/src/apps/deepwalk.cu.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CUDA source to CMakeFiles/MyExecutable.dir/src/apps/deepwalk.cu.i"
 	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CUDA_CREATE_PREPROCESSED_SOURCE
 
-CMakeFiles/MyExecutable.dir/src/deepwalk.cu.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CUDA source to assembly CMakeFiles/MyExecutable.dir/src/deepwalk.cu.s"
+CMakeFiles/MyExecutable.dir/src/apps/deepwalk.cu.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CUDA source to assembly CMakeFiles/MyExecutable.dir/src/apps/deepwalk.cu.s"
 	$(CMAKE_COMMAND) -E cmake_unimplemented_variable CMAKE_CUDA_CREATE_ASSEMBLY_SOURCE
+
+CMakeFiles/MyExecutable.dir/src/main.cpp.o: CMakeFiles/MyExecutable.dir/flags.make
+CMakeFiles/MyExecutable.dir/src/main.cpp.o: ../src/main.cpp
+CMakeFiles/MyExecutable.dir/src/main.cpp.o: CMakeFiles/MyExecutable.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/pw346/Bingo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/MyExecutable.dir/src/main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/MyExecutable.dir/src/main.cpp.o -MF CMakeFiles/MyExecutable.dir/src/main.cpp.o.d -o CMakeFiles/MyExecutable.dir/src/main.cpp.o -c /home/pw346/Bingo/src/main.cpp
+
+CMakeFiles/MyExecutable.dir/src/main.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/MyExecutable.dir/src/main.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/pw346/Bingo/src/main.cpp > CMakeFiles/MyExecutable.dir/src/main.cpp.i
+
+CMakeFiles/MyExecutable.dir/src/main.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/MyExecutable.dir/src/main.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/pw346/Bingo/src/main.cpp -o CMakeFiles/MyExecutable.dir/src/main.cpp.s
 
 # Object files for target MyExecutable
 MyExecutable_OBJECTS = \
-"CMakeFiles/MyExecutable.dir/src/deepwalk.cu.o"
+"CMakeFiles/MyExecutable.dir/src/apps/deepwalk.cu.o" \
+"CMakeFiles/MyExecutable.dir/src/main.cpp.o"
 
 # External object files for target MyExecutable
 MyExecutable_EXTERNAL_OBJECTS =
 
-CMakeFiles/MyExecutable.dir/cmake_device_link.o: CMakeFiles/MyExecutable.dir/src/deepwalk.cu.o
+CMakeFiles/MyExecutable.dir/cmake_device_link.o: CMakeFiles/MyExecutable.dir/src/apps/deepwalk.cu.o
+CMakeFiles/MyExecutable.dir/cmake_device_link.o: CMakeFiles/MyExecutable.dir/src/main.cpp.o
 CMakeFiles/MyExecutable.dir/cmake_device_link.o: CMakeFiles/MyExecutable.dir/build.make
 CMakeFiles/MyExecutable.dir/cmake_device_link.o: /usr/lib/gcc/x86_64-redhat-linux/11/libgomp.so
 CMakeFiles/MyExecutable.dir/cmake_device_link.o: /usr/lib64/libpthread.a
 CMakeFiles/MyExecutable.dir/cmake_device_link.o: CMakeFiles/MyExecutable.dir/dlink.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/pw346/Bingo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CUDA device code CMakeFiles/MyExecutable.dir/cmake_device_link.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/pw346/Bingo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CUDA device code CMakeFiles/MyExecutable.dir/cmake_device_link.o"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/MyExecutable.dir/dlink.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -104,18 +120,20 @@ CMakeFiles/MyExecutable.dir/build: CMakeFiles/MyExecutable.dir/cmake_device_link
 
 # Object files for target MyExecutable
 MyExecutable_OBJECTS = \
-"CMakeFiles/MyExecutable.dir/src/deepwalk.cu.o"
+"CMakeFiles/MyExecutable.dir/src/apps/deepwalk.cu.o" \
+"CMakeFiles/MyExecutable.dir/src/main.cpp.o"
 
 # External object files for target MyExecutable
 MyExecutable_EXTERNAL_OBJECTS =
 
-MyExecutable: CMakeFiles/MyExecutable.dir/src/deepwalk.cu.o
+MyExecutable: CMakeFiles/MyExecutable.dir/src/apps/deepwalk.cu.o
+MyExecutable: CMakeFiles/MyExecutable.dir/src/main.cpp.o
 MyExecutable: CMakeFiles/MyExecutable.dir/build.make
 MyExecutable: /usr/lib/gcc/x86_64-redhat-linux/11/libgomp.so
 MyExecutable: /usr/lib64/libpthread.a
 MyExecutable: CMakeFiles/MyExecutable.dir/cmake_device_link.o
 MyExecutable: CMakeFiles/MyExecutable.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/pw346/Bingo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CUDA executable MyExecutable"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/pw346/Bingo/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable MyExecutable"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/MyExecutable.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

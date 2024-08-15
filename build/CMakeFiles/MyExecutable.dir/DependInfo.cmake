@@ -8,7 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/pw346/Bingo/src/deepwalk.cu" "CMakeFiles/MyExecutable.dir/src/deepwalk.cu.o" "gcc" "CMakeFiles/MyExecutable.dir/src/deepwalk.cu.o.d"
+  "/home/pw346/Bingo/src/apps/deepwalk.cu" "CMakeFiles/MyExecutable.dir/src/apps/deepwalk.cu.o" "gcc" "CMakeFiles/MyExecutable.dir/src/apps/deepwalk.cu.o.d"
+  "/home/pw346/Bingo/src/main.cpp" "CMakeFiles/MyExecutable.dir/src/main.cpp.o" "gcc" "CMakeFiles/MyExecutable.dir/src/main.cpp.o.d"
   )
 
 # Targets to which this target links.

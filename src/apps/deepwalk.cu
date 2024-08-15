@@ -3,6 +3,7 @@
 #include<cstring>
 #include<omp.h>
 #include"api.h"
+#include"apps.h"
 #include"gpuMem.cuh"
 #include"operation.cuh"
 #include"Bingo.cuh"
@@ -198,7 +199,7 @@ void randomWalk(){
    // }
    // delete[] rw;
 }
-int main(int argc, char** argv){
+int deepwalk(){
     freopen("../dataset/AM","r",stdin);
     Timer TT;TT.restart();
     omp_set_num_threads(CPUTHD);
