@@ -129,29 +129,53 @@ MyExecutable/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyExecutable.dir/build.make CMakeFiles/MyExecutable.dir/build
 .PHONY : MyExecutable/fast
 
-src/deepwalk.o: src/deepwalk.cu.o
-.PHONY : src/deepwalk.o
+src/apps/deepwalk.o: src/apps/deepwalk.cu.o
+.PHONY : src/apps/deepwalk.o
 
 # target to build an object file
-src/deepwalk.cu.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyExecutable.dir/build.make CMakeFiles/MyExecutable.dir/src/deepwalk.cu.o
-.PHONY : src/deepwalk.cu.o
+src/apps/deepwalk.cu.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyExecutable.dir/build.make CMakeFiles/MyExecutable.dir/src/apps/deepwalk.cu.o
+.PHONY : src/apps/deepwalk.cu.o
 
-src/deepwalk.i: src/deepwalk.cu.i
-.PHONY : src/deepwalk.i
+src/apps/deepwalk.i: src/apps/deepwalk.cu.i
+.PHONY : src/apps/deepwalk.i
 
 # target to preprocess a source file
-src/deepwalk.cu.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyExecutable.dir/build.make CMakeFiles/MyExecutable.dir/src/deepwalk.cu.i
-.PHONY : src/deepwalk.cu.i
+src/apps/deepwalk.cu.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyExecutable.dir/build.make CMakeFiles/MyExecutable.dir/src/apps/deepwalk.cu.i
+.PHONY : src/apps/deepwalk.cu.i
 
-src/deepwalk.s: src/deepwalk.cu.s
-.PHONY : src/deepwalk.s
+src/apps/deepwalk.s: src/apps/deepwalk.cu.s
+.PHONY : src/apps/deepwalk.s
 
 # target to generate assembly for a file
-src/deepwalk.cu.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyExecutable.dir/build.make CMakeFiles/MyExecutable.dir/src/deepwalk.cu.s
-.PHONY : src/deepwalk.cu.s
+src/apps/deepwalk.cu.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyExecutable.dir/build.make CMakeFiles/MyExecutable.dir/src/apps/deepwalk.cu.s
+.PHONY : src/apps/deepwalk.cu.s
+
+src/main.o: src/main.cpp.o
+.PHONY : src/main.o
+
+# target to build an object file
+src/main.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyExecutable.dir/build.make CMakeFiles/MyExecutable.dir/src/main.cpp.o
+.PHONY : src/main.cpp.o
+
+src/main.i: src/main.cpp.i
+.PHONY : src/main.i
+
+# target to preprocess a source file
+src/main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyExecutable.dir/build.make CMakeFiles/MyExecutable.dir/src/main.cpp.i
+.PHONY : src/main.cpp.i
+
+src/main.s: src/main.cpp.s
+.PHONY : src/main.s
+
+# target to generate assembly for a file
+src/main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyExecutable.dir/build.make CMakeFiles/MyExecutable.dir/src/main.cpp.s
+.PHONY : src/main.cpp.s
 
 # Help Target
 help:
@@ -162,9 +186,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... MyExecutable"
-	@echo "... src/deepwalk.o"
-	@echo "... src/deepwalk.i"
-	@echo "... src/deepwalk.s"
+	@echo "... src/apps/deepwalk.o"
+	@echo "... src/apps/deepwalk.i"
+	@echo "... src/apps/deepwalk.s"
+	@echo "... src/main.o"
+	@echo "... src/main.i"
+	@echo "... src/main.s"
 .PHONY : help
 
 
