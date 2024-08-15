@@ -256,12 +256,12 @@ CMakeFiles/MyExecutable.dir/src/deepwalk.cu.o : /home/pw346/Bingo/src/deepwalk.c
     /usr/include/c++/11/bits/istream.tcc \
     /usr/include/c++/11/cstring \
     /usr/lib/gcc/x86_64-redhat-linux/11/include/omp.h \
-    /home/pw346/Bingo/src/api.h \
-    /home/pw346/Bingo/src/gpuMem.cuh \
-    /home/pw346/Bingo/src/operation.cuh \
-    /home/pw346/Bingo/src/type.h \
-    /home/pw346/Bingo/src/Bingo.cuh \
-    /home/pw346/Bingo/src/utils.cuh \
+    /home/pw346/Bingo/include/api.h \
+    /home/pw346/Bingo/include/gpuMem.cuh \
+    /home/pw346/Bingo/include/operation.cuh \
+    /home/pw346/Bingo/include/type.h \
+    /home/pw346/Bingo/include/Bingo.cuh \
+    /home/pw346/Bingo/include/utils.cuh \
     /usr/include/c++/11/chrono \
     /usr/include/c++/11/ratio \
     /usr/include/c++/11/limits \
