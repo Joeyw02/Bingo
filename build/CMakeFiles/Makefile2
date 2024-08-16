@@ -63,7 +63,7 @@ CMAKE_BINARY_DIR = /home/pw346/Bingo/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/MyExecutable.dir/all
+all: CMakeFiles/Bingo.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -71,34 +71,34 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/MyExecutable.dir/clean
+clean: CMakeFiles/Bingo.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/MyExecutable.dir
+# Target rules for target CMakeFiles/Bingo.dir
 
 # All Build rule for target.
-CMakeFiles/MyExecutable.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyExecutable.dir/build.make CMakeFiles/MyExecutable.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyExecutable.dir/build.make CMakeFiles/MyExecutable.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/pw346/Bingo/build/CMakeFiles --progress-num=1,2,3,4 "Built target MyExecutable"
-.PHONY : CMakeFiles/MyExecutable.dir/all
+CMakeFiles/Bingo.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Bingo.dir/build.make CMakeFiles/Bingo.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Bingo.dir/build.make CMakeFiles/Bingo.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/pw346/Bingo/build/CMakeFiles --progress-num=1,2,3,4 "Built target Bingo"
+.PHONY : CMakeFiles/Bingo.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/MyExecutable.dir/rule: cmake_check_build_system
+CMakeFiles/Bingo.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/pw346/Bingo/build/CMakeFiles 4
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/MyExecutable.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Bingo.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/pw346/Bingo/build/CMakeFiles 0
-.PHONY : CMakeFiles/MyExecutable.dir/rule
+.PHONY : CMakeFiles/Bingo.dir/rule
 
 # Convenience name for target.
-MyExecutable: CMakeFiles/MyExecutable.dir/rule
-.PHONY : MyExecutable
+Bingo: CMakeFiles/Bingo.dir/rule
+.PHONY : Bingo
 
 # clean rule for target.
-CMakeFiles/MyExecutable.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyExecutable.dir/build.make CMakeFiles/MyExecutable.dir/clean
-.PHONY : CMakeFiles/MyExecutable.dir/clean
+CMakeFiles/Bingo.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Bingo.dir/build.make CMakeFiles/Bingo.dir/clean
+.PHONY : CMakeFiles/Bingo.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

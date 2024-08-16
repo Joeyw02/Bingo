@@ -5,12 +5,11 @@
 #define THDSZ 128
 #define P 0.5
 #define Q 2
-const int BEG=0;
+const int BEG=LOGT*0.5;
 const int BITS=LOGT-BEG;
 const int LEN=80;
 const int CPUTHD=16;
 const int GPUS=1;
 const bool NODE2VEC=0;
 const bool BUFFER=0;
-const float ChangeR=0.01;
 const float TP=0.0125;//termination probability

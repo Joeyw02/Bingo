@@ -8,6 +8,7 @@
 #include"operation.cuh"
 #include"Bingo.cuh"
 #include"utils.cuh"
+#include"test.cuh"
 using namespace std;
 CPURand r;
 int n,batchSize=100000;
@@ -24,8 +25,7 @@ void loadGraph(){
     }   
     cerr<<"Edge number: "<<edgeData.size()<<"."<<endl;
     for(int i=0;i<edgeData.size();++i)n=max(n,max(edgeData[i].u,edgeData[i].v));
-    int amount=edgeData.size();cerr<<n<<endl;
-    //batchSize=amount*ChangeR;
+    int amount=edgeData.size();
     Edges *edges=new Edges[amount];
     d=new int[n+1];
     memset(d,0,sizeof(int)*(n+1));
@@ -69,77 +69,6 @@ double totalTime=0;
 
 int *rwD[GPUS];
 
-__global__ void countGraph(int n,NodeData *ndD,int *a,double *b,double *c,double *d,double *e,int *log2){
-    if(threadIdx.x!=0)return;
-    a[0]=a[1]=a[2]=a[3]=0;
-    log2[0]=0;
-    log2[1]=1;
-    for(int i=2;i<5000000;++i){log2[i]=log2[i>>1]<<1;if(log2[i]<i)log2[i]<<=1;}
-    float b11=0,b12=0;
-    float b31=0,b32=0;
-    for(int i=1;i<=n;++i){
-        int x=4;
-        if(ndD[i].edgeSZ<256)x=1;
-        else if(ndD[i].edgeSZ<65536)x=2;
-        for(int j=0;j<LOGT;++j){
-            if(ndD[i].num[j]==0)continue;if((100ll*i/n)!=(100ll*(i-1)/n)&&j==0)printf("%d %d %d\n",i,j,n);
-            ++a[0];
-            if(ndD[i].num[j]==1){
-                ++a[1];b11+=1;b12+=1+ndD[i].edgeSZ;
-                c[1]+=4+1;
-                d[1]+=x+1;
-                e[1]+=(log2[ndD[i].num[j]]+log2[ndD[i].edgeSZ])*4;
-            }
-            else if(ndD[i].num[j]*5<ndD[i].edgeSZ){
-                ++a[2];b31+=ndD[i].num[j]*2+1;b32+=ndD[i].num[j]+ndD[i].edgeSZ;
-                c[2]+=(log2[ndD[i].num[j]]+log2[ndD[i].num[j]+1])*4+1;
-                d[2]+=(log2[ndD[i].num[j]]+log2[ndD[i].num[j]+1])*x+1;
-                e[2]+=(log2[ndD[i].num[j]]+log2[ndD[i].edgeSZ])*4;
-            }
-            else if(ndD[i].num[j]>ndD[i].edgeSZ*0.5){
-                ++a[3];
-                c[3]+=1;
-                d[3]+=1;
-                e[3]+=(log2[ndD[i].num[j]]+log2[ndD[i].edgeSZ])*4;
-            }
-            else{
-                c[0]+=(log2[ndD[i].num[j]]+log2[ndD[i].edgeSZ])*4+1;
-                d[0]+=(log2[ndD[i].num[j]]+log2[ndD[i].edgeSZ])*x+1;
-                e[0]+=(log2[ndD[i].num[j]]+log2[ndD[i].edgeSZ])*4;
-            }
-        }
-    }
-    b[1]=b11/b12;
-    b[2]=b31/b32;
-    for(int i=0;i<4;++i)(c[i]/=1048576)/=1024,(d[i]/=1048576)/=1024,(e[i]/=1048576)/=1024;
-    
-}
-void countGraph(){
-    int a[4]={0,0,0,0};//total one sparse dense
-    int *aD;cudaMalloc((void**)&aD,4*sizeof(int));
-    double *bD;cudaMalloc((void**)&bD,4*sizeof(double));
-    double *cD;cudaMalloc((void**)&cD,4*sizeof(double));
-    double *dD;cudaMalloc((void**)&dD,4*sizeof(double));
-    double *eD;cudaMalloc((void**)&eD,4*sizeof(double));
-    int *log2;cudaMalloc((void**)&log2,5000000*sizeof(int));
-    countGraph<<<1,32>>>(n,ndD[0],aD,bD,cD,dD,eD,log2);
-    cudaDeviceSynchronize();
-    HE(cudaGetLastError());
-    cudaMemcpy(a,aD,4*sizeof(int),cudaMemcpyDeviceToHost);
-    double b[4],c[4],d[4],e[4];
-    cudaMemcpy(b,bD,4*sizeof(double),cudaMemcpyDeviceToHost);
-    cudaMemcpy(c,cD,4*sizeof(double),cudaMemcpyDeviceToHost);
-    cudaMemcpy(d,dD,4*sizeof(double),cudaMemcpyDeviceToHost);
-    cudaMemcpy(e,eD,4*sizeof(double),cudaMemcpyDeviceToHost);
-    cout<<a[0]<<" "<<a[1]<<" "<<a[2]<<" "<<a[3]<<endl;
-    cout<<"one"<<" "<<"sparse "<<"dense"<<endl;
-    cout<<1.*a[1]/a[0]<<" "<<1.*a[2]/a[0]<<" "<<1.*a[3]/a[0]<<endl;
-    cout<<b[1]<<" "<<b[2]<<" "<<b[3]<<endl;
-    cout<<c[0]<<" "<<c[1]<<" "<<c[2]<<" "<<c[3]<<" "<<c[0]+c[1]+c[2]+c[3]<<endl;
-    cout<<d[0]<<" "<<d[1]<<" "<<d[2]<<" "<<d[3]<<" "<<d[0]+d[1]+d[2]+d[3]<<endl;
-    cout<<e[0]<<" "<<e[1]<<" "<<e[2]<<" "<<e[3]<<" "<<e[0]+e[1]+e[2]+e[3]<<endl;
-}
-
 void randomWalk(){
     //int *rw=new int[LEN*n];
     Timer tt;//tt.restart();
@@ -159,9 +88,7 @@ void randomWalk(){
             randomWalkKernel<<<BLKSZ,THDSZ>>>(g,n,ndD[g],rwD[g],((ull)new char)+g*13/*abc,bbc*/);
             cudaDeviceSynchronize();
             HE(cudaGetLastError());
-            //randomWalkKernel<<<BLKSZ,THDSZ>>>(1,n,ndD[g],rwD[g],((ull)new char)+g*13/*abc,bbc*/);
-            //cudaDeviceSynchronize();
-            //HE(cudaGetLastError());
+         
           //  time=max(time,gT.finish());
      //   }
     }
@@ -176,27 +103,9 @@ void randomWalk(){
    for(int i=0;i<=10;++i){
     for(int j=1;j<=80;++j)cout<<rw[i*80+j-1]<<" ";cout<<endl;}
 
-    long long a=0,mx=0;
-    for(int iii=1;iii<=1000000;++iii){
-        int pos=r.rd(edgeData.size());
-        //while(edgeData[pos].u<=n/2)pos=r.rd(edgeData.size());
-        int u=edgeData[pos].u;
-        long long sum=0;
-        for(int i=0;i<LEN*n/10;++i)
-        if((rw[i])==u)++sum;
-        a+=sum;mx=max(mx,sum);
-        if(iii%10==0)cout<<1.*a/iii<<" "<<mx<<endl;
-    }
+
 */
-    //int *xxx=new int[n];
-   // memset(xxx,0,sizeof(int)*n);
-//    for(int i=0;i<n*80;++i)if(rw[i]!=-1&&rw[i]!=0)++xxx[rw[i]];
-    //sort(xxx,xxx+n);
-   // for(int i=1;i<=3000;++i)cerr<<xxx[n-i]<<" "<<100.*xxx[n-i]/(80*n)<<"% "<<endl;
-    //for(int i=1;i<=10;++i){
-      //  for(int j=1;j<=LEN;++j)printf("%d ",rw[(i-1)*LEN+j-1]);
-        //puts("");
-   // }
+
    // delete[] rw;
 }
 int deepwalk(){
