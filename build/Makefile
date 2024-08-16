@@ -117,24 +117,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named MyExecutable
+# Target rules for targets named Bingo
 
 # Build rule for target.
-MyExecutable: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 MyExecutable
-.PHONY : MyExecutable
+Bingo: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Bingo
+.PHONY : Bingo
 
 # fast build rule for target.
-MyExecutable/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyExecutable.dir/build.make CMakeFiles/MyExecutable.dir/build
-.PHONY : MyExecutable/fast
+Bingo/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Bingo.dir/build.make CMakeFiles/Bingo.dir/build
+.PHONY : Bingo/fast
 
 src/apps/deepwalk.o: src/apps/deepwalk.cu.o
 .PHONY : src/apps/deepwalk.o
 
 # target to build an object file
 src/apps/deepwalk.cu.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyExecutable.dir/build.make CMakeFiles/MyExecutable.dir/src/apps/deepwalk.cu.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Bingo.dir/build.make CMakeFiles/Bingo.dir/src/apps/deepwalk.cu.o
 .PHONY : src/apps/deepwalk.cu.o
 
 src/apps/deepwalk.i: src/apps/deepwalk.cu.i
@@ -142,7 +142,7 @@ src/apps/deepwalk.i: src/apps/deepwalk.cu.i
 
 # target to preprocess a source file
 src/apps/deepwalk.cu.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyExecutable.dir/build.make CMakeFiles/MyExecutable.dir/src/apps/deepwalk.cu.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Bingo.dir/build.make CMakeFiles/Bingo.dir/src/apps/deepwalk.cu.i
 .PHONY : src/apps/deepwalk.cu.i
 
 src/apps/deepwalk.s: src/apps/deepwalk.cu.s
@@ -150,7 +150,7 @@ src/apps/deepwalk.s: src/apps/deepwalk.cu.s
 
 # target to generate assembly for a file
 src/apps/deepwalk.cu.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyExecutable.dir/build.make CMakeFiles/MyExecutable.dir/src/apps/deepwalk.cu.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Bingo.dir/build.make CMakeFiles/Bingo.dir/src/apps/deepwalk.cu.s
 .PHONY : src/apps/deepwalk.cu.s
 
 src/main.o: src/main.cpp.o
@@ -158,7 +158,7 @@ src/main.o: src/main.cpp.o
 
 # target to build an object file
 src/main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyExecutable.dir/build.make CMakeFiles/MyExecutable.dir/src/main.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Bingo.dir/build.make CMakeFiles/Bingo.dir/src/main.cpp.o
 .PHONY : src/main.cpp.o
 
 src/main.i: src/main.cpp.i
@@ -166,7 +166,7 @@ src/main.i: src/main.cpp.i
 
 # target to preprocess a source file
 src/main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyExecutable.dir/build.make CMakeFiles/MyExecutable.dir/src/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Bingo.dir/build.make CMakeFiles/Bingo.dir/src/main.cpp.i
 .PHONY : src/main.cpp.i
 
 src/main.s: src/main.cpp.s
@@ -174,7 +174,7 @@ src/main.s: src/main.cpp.s
 
 # target to generate assembly for a file
 src/main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/MyExecutable.dir/build.make CMakeFiles/MyExecutable.dir/src/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Bingo.dir/build.make CMakeFiles/Bingo.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
 # Help Target
@@ -185,7 +185,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... MyExecutable"
+	@echo "... Bingo"
 	@echo "... src/apps/deepwalk.o"
 	@echo "... src/apps/deepwalk.i"
 	@echo "... src/apps/deepwalk.s"

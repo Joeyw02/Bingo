@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/Bingo.dir/src/apps/deepwalk.cu.o CMakeFiles/Bingo.dir/src/main.cpp.o CMakeFiles/Bingo.dir/cmake_device_link.o -o Bingo   -L/usr/local/cuda/targets/x86_64-linux/lib/stubs  -L/usr/local/cuda/targets/x86_64-linux/lib  /usr/lib/gcc/x86_64-redhat-linux/11/libgomp.so /usr/lib64/libpthread.a -lcudadevrt -lcudart_static -lrt -lpthread -ldl 
