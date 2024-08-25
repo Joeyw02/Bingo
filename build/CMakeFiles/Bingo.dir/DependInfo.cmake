@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/pw346/Bingo/src/apps/deepwalk.cu" "CMakeFiles/Bingo.dir/src/apps/deepwalk.cu.o" "gcc" "CMakeFiles/Bingo.dir/src/apps/deepwalk.cu.o.d"
+  "/home/pw346/Bingo/src/apps.cu" "CMakeFiles/Bingo.dir/src/apps.cu.o" "gcc" "CMakeFiles/Bingo.dir/src/apps.cu.o.d"
   "/home/pw346/Bingo/src/main.cpp" "CMakeFiles/Bingo.dir/src/main.cpp.o" "gcc" "CMakeFiles/Bingo.dir/src/main.cpp.o.d"
   )
 
