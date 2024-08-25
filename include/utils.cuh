@@ -3,6 +3,7 @@
 #include<chrono>
 #include<curand_kernel.h>
 #include<cstdlib>
+#include"type.h"
 using namespace std;
 #define HE(err) (handleError(err, __FILE__, __LINE__))
 inline __device__ void swAp(unsigned a,unsigned b){a^=b^=a^=b;}

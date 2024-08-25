@@ -28,16 +28,6 @@ void build(Edges *edges,int amount,NodeData **nd,NodeData **ndD,int *d,int **siz
         (*sizeManager)[i]=16;
         while((*sizeManager)[i]<d[i])(*sizeManager)[i]<<=1;
     }
-    //pair<int,int>*x=new pair<int,int>[n+1];
-    //#pragma omp parallel for
-    //for(int i=1;i<=n;++i)x[i].first=d[i],x[i].second=i;
-    //sort(x+1,x+n+1);
-    //int *LP=new int[n+1];
-    //#pragma omp parallel for
-    //for(int i=1;i<=n;++i)LP[i]=-1;
-    //int *L=new int[128];
-    //#pragma omp parallel for
-    //for(int i=1;i<=min(n,128);++i)LP[x[n-i+1].second]=i-1,L[i-1]=x[n-i+1].second;       //    for(int i=1;i<=128;++i)cerr<<x[n-i+1].first<<" "<<x[n-i+1].second<<endl;
     #pragma omp parallel for
     for(int g=0;g<GPUS;++g){
         cudaSetDevice(g);
@@ -48,7 +38,7 @@ void build(Edges *edges,int amount,NodeData **nd,NodeData **ndD,int *d,int **siz
         cudaMemcpyAsync(ndD[g],nd[g],(n+1)*sizeof(NodeData),cudaMemcpyHostToDevice);
     }
     Edges *edgesD[GPUS];
-    vector<Edges> *sortTMP=new vector<Edges>[n+1];//cerr<<3<<endl;
+    vector<Edges> *sortTMP=new vector<Edges>[n+1];
     for(int i=0;i<amount;++i)sortTMP[edges[i].u].push_back(edges[i]);
     amount=0;
     for(int i=1;i<=n;++i)
@@ -60,26 +50,18 @@ void build(Edges *edges,int amount,NodeData **nd,NodeData **ndD,int *d,int **siz
        cudaSetDevice(g);
        cudaMalloc((void **)&edgesD[g],amount*sizeof(Edges));
        cudaMemcpyAsync(edgesD[g],edges,amount*sizeof(Edges),cudaMemcpyHostToDevice);
-    }//cerr<<-3<<endl;
+    }
     vector<int>tmp;
     for(int i=0;i<amount;++i)if((!i)||edges[i].u!=edges[i-1].u)tmp.push_back(i);
     
-    /*for(int i=0;i<tmp.size();++i){
-        int be=tmp[i],ed;
-        if(i+1==tmp.size())ed=amount;
-        else ed=tmp[i+1];
-        for(int j=be;j<ed;++j)printf("%d ",edges[j].weight);
-        printf("\n");
-    }*/
-
     int *beginD[GPUS];float time=0;
     #pragma omp parallel for
     for(int g=0;g<GPUS;++g){
         cudaSetDevice(g);
         cudaMalloc((void **)&beginD[g],tmp.size()*sizeof(int));
         cudaMemcpyAsync(beginD[g],tmp.data(),tmp.size()*sizeof(int),cudaMemcpyHostToDevice);
-        cudaDeviceSynchronize();          //    if(g+1==GPUS)cerr<<tmp.size()<<"  prebulid time2 "<<ttt.duration()<<endl;
-        GPUTimer gT;gT.init();     //
+        cudaDeviceSynchronize();
+        GPUTimer gT;gT.init();
         buildKernel<<<BLKSZ,THDSZ>>>(tmp.size(),amount,ndD[g],edgesD[g],beginD[g]);
         cudaDeviceSynchronize();
         HE(cudaGetLastError());
@@ -93,8 +75,7 @@ __global__ void insertKernel(int n,NodeData *ndD,Edges *edgesD,int *beginD){
     int tid = blockIdx.x * blockDim.x + threadIdx.x,wid=tid>>5,totalW=(BLKSZ*THDSZ)>>5;
     if(!tid)ndD[0].SZ=totalW;
     __shared__ NodeData::TEMP l[(LOGT*THDSZ)>>5],s[(LOGT*THDSZ)>>5];
-    int pos=wid;//if(!(tid&31))pos=atomicAdd(&(ndD[0].SZ),1);if(!(tid&31))printf("%d %d\n",pos,tid);
-    //pos= __shfl_sync(0xffffffff,pos,0);
+    int pos=wid;
     while(pos<n){
         int begin=beginD[pos],end=beginD[pos+1];
         int u=edgesD[begin].u;//if(!(tid&31))printf("%d %d %d %d %d\n",pos,begin,end,u,tid);
@@ -111,13 +92,13 @@ __global__ void insertKernel(int n,NodeData *ndD,Edges *edgesD,int *beginD){
 void insert(Edges *edges,int amount,NodeData **nd,NodeData **ndD,int *d,int *sizeManager){
     ttt.restart();
     stable_sort(edges,edges+amount,cmpEdges);
-    Edges *edgesD[GPUS];//cerr<<1<<endl;
+    Edges *edgesD[GPUS];
     #pragma omp parallel for
     for(int g=0;g<GPUS;++g){
         cudaSetDevice(g);
         cudaMalloc((void **)&edgesD[g],amount*sizeof(Edges));
         cudaMemcpyAsync(edgesD[g],edges,amount*sizeof(Edges),cudaMemcpyHostToDevice);
-    }//cerr<<2<<endl;
+    }
     vector<int>tmp;
     for(int i=0;i<amount;++i)
     if((!i)||edges[i].u!=edges[i-1].u){
@@ -142,10 +123,9 @@ void insert(Edges *edges,int amount,NodeData **nd,NodeData **ndD,int *d,int *siz
     for(int g=0;g<GPUS;++g){
         cudaSetDevice(g);
         cudaMalloc((void **)&beginD[g],tmp.size()*sizeof(int));
-        cudaMemcpy(beginD[g],tmp.data(),tmp.size()*sizeof(int),cudaMemcpyHostToDevice);    
-        
+        cudaMemcpy(beginD[g],tmp.data(),tmp.size()*sizeof(int),cudaMemcpyHostToDevice);
         cudaDeviceSynchronize();
-        //GPUTimer gT;gT.init();//if(g+1==GPUS)cerr<<"pre ins: "<<ttt.duration()<<endl;
+        //GPUTimer gT;gT.init();
     	insertKernel<<<BLKSZ,THDSZ>>>(tmp.size()-1,ndD[g],edgesD[g],beginD[g]);
         cudaDeviceSynchronize();
         HE(cudaGetLastError());
@@ -188,10 +168,8 @@ void deleteE(Deleted *edges,int amount,NodeData **ndD){
         cudaMalloc((void **)&beginD[g],tmp.size()*sizeof(int));
         cudaMemcpy(beginD[g],tmp.data(),tmp.size()*sizeof(int),cudaMemcpyHostToDevice);  ttt.restart();
         cudaDeviceSynchronize();
-   //     if(g+1==GPUS)cerr<<"predelet"<<ttt.duration()<<" "<<amount<<" "<<tmp.size()<<endl;
        // GPUTimer gT;gT.init();
         deleteKernel<<<BLKSZ,THDSZ>>>(tmp.size()-1,ndD[g],edgesD[g],beginD[g]);
-       
         cudaDeviceSynchronize();
         HE(cudaGetLastError());
       //  time=max(time,gT.finish());
@@ -199,7 +177,7 @@ void deleteE(Deleted *edges,int amount,NodeData **ndD){
     }//time/1000
     cerr<<"delete edges in "<<ttt.duration()<<" s."<<endl;
 }
-__global__ void randomWalkKernel(int gId,int n, NodeData *ndD, int *rwD,ull seed/*,unsigned long long *abc,unsigned long long *bbc*/){
+__global__ void deepwalkKernel(int gId,int n, NodeData *ndD, int *rwD,ull seed){
     int tid = blockIdx.x * blockDim.x + threadIdx.x;
     int bg=(n*gId/GPUS)+1;
     ndD[0].edgeSZ=bg;
@@ -209,11 +187,10 @@ __global__ void randomWalkKernel(int gId,int n, NodeData *ndD, int *rwD,ull seed
    // AliasSM[i*LOGT+j]=ndD[L[i]].aliasTable[j];
     //__syncthreads();
     RandomGenerator rdG;
-    rdG.init((19260817^seed)+tid,tid);//printf("%d %d\n",tid+(n*gId/GPUS)+1,n*(gId+1)/GPUS);
-    //if(!(tid&31))
+    rdG.init((19260817^seed)+tid,tid);
     int pos,ed=n*(gId+1)/GPUS;
     if(!(tid&31))pos=atomicAdd(&ndD[0].edgeSZ,32);
-    pos= __shfl_sync(0xffffffff,pos,0);//if(!(tid&31))printf("%d\n",pos);
+    pos= __shfl_sync(0xffffffff,pos,0);
     while(pos<=ed){
         int u=pos+(tid&31);
         if(u<=ed){
@@ -223,34 +200,37 @@ __global__ void randomWalkKernel(int gId,int n, NodeData *ndD, int *rwD,ull seed
                 u=ndD[u].sample(rdG);
                 (*(++rw))=u;
             }
-            /*for(int j=1;u!=-1;++j){
-                u=ndD[u].sample(rdG,abc,bbc);
-                if(j<80)++rw;
-                (*(rw))=u;
-                if(rdG.getRandomNumber()<TP)break;
-            }*/
-
         }
         __syncwarp();
         if(!(tid&31))pos=atomicAdd(&ndD[0].edgeSZ,32);
         pos= __shfl_sync(0xffffffff,pos,0);
     }
-  //  for(int i=tid+;i<=;i+=totalT){
-    //     int u=i,bg=(i-((n*gId/GPUS)+1))*LEN;
-      //  for(int j=0;j<LEN;++j){
-        //    rwD[bg+j]=u;
-          //  if(j==LEN-1||u==-1)break;
-            //int tmp=ndD[u].sample(rdG);
-         //   while(NODE2VEC&&j>0){
-           //     int v=rwD[(i-bg)*LEN+j-1];
-             //   float b=EPS;
-              //  if(!ndD[v].hs.check(tmp))b+=1./Q*P;
-               // if(rdG.getRandomNumber()<b)break;
-               // tmp=ndD[u].sample(rdG);
-            //}
-          //  u=tmp;
-       // }
-   // }
+}
+__global__ void pprKernel(int gId,int n, NodeData *ndD, int *rwD,ull seed){
+    int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    int bg=(n*gId/GPUS)+1;
+    ndD[0].edgeSZ=bg;
+    RandomGenerator rdG;
+    rdG.init((19260817^seed)+tid,tid);
+    int pos,ed=n*(gId+1)/GPUS;
+    if(!(tid&31))pos=atomicAdd(&ndD[0].edgeSZ,32);
+    pos= __shfl_sync(0xffffffff,pos,0);
+    while(pos<=ed){
+        int u=pos+(tid&31);
+        if(u<=ed){
+            int *rw=rwD+(u-bg)*LEN;
+            (*rw)=u;
+           for(int j=1;u!=-1;++j){
+                u=ndD[u].sample(rdG);
+                if(j<LEN)++rw;
+                (*(rw))=u;
+                if(rdG.getRandomNumber()<TP)break;
+            }
+        }
+        __syncwarp();
+        if(!(tid&31))pos=atomicAdd(&ndD[0].edgeSZ,32);
+        pos= __shfl_sync(0xffffffff,pos,0);
+    }
 }
 /*
 __global__ void resetKernel(int n,NodeData *ndD){
@@ -264,7 +244,7 @@ void requestBuffer(int n, NodeData **nd,NodeData **ndD){
     for(int g=0;g<GPUS;++g){
         cudaSetDevice(g);
         cudaMalloc((void **)&rwD[g],(LEN*(n/GPUS+1))*sizeof(int));
-        randomWalkKernel<<<BLKSZ,THDSZ>>>(g,n,ndD[g],rwD[g],((ull)new char)+g*13);//,abc,bbc);
+        randomWalkKernel<<<BLKSZ,THDSZ>>>(g,n,ndD[g],rwD[g],((ull)new char)+g*13);
         cudaDeviceSynchronize();
         cudaMemcpy(nd[g],ndD[g],(n+1)*sizeof(NodeData),cudaMemcpyDeviceToHost);
         HE(cudaGetLastError());
@@ -280,14 +260,5 @@ void requestBuffer(int n, NodeData **nd,NodeData **ndD){
         for(int i=1;i<=n;++i)nd[g][i].initBuffer(g);
         cudaMemcpy(ndD[g],nd[g],(n+1)*sizeof(NodeData),cudaMemcpyHostToDevice);
     }
-    //int *xxx=new int[n];
-   // memset(xxx,0,sizeof(int)*n);
-//    for(int i=0;i<n*80;++i)if(rw[i]!=-1&&rw[i]!=0)++xxx[rw[i]];
-    //sort(xxx,xxx+n);
-   // for(int i=1;i<=3000;++i)cerr<<xxx[n-i]<<" "<<100.*xxx[n-i]/(80*n)<<"% "<<endl;
-//    for(int i=1;i<=10;++i){
-  //      for(int j=1;j<=LEN;++j)printf("%d ",rw[(i-1)*LEN+j-1]);
-    //    puts("");
-    //}
     delete[] rw;
 }*/

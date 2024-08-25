@@ -1,21 +1,18 @@
-#include<iostream>
-#include<cstdio>
-#include<cstring>
-#include<omp.h>
+#pragma once
+#include<vector>
 #include"api.h"
-#include"apps.h"
-#include"gpuMem.cuh"
+#include"graph.cuh"
 #include"operation.cuh"
 #include"Bingo.cuh"
-#include"utils.cuh"
 #include"test.cuh"
 using namespace std;
-CPURand r;
-int n,batchSize=100000;
-int *d,*sizeManager;
-vector<EdgeData>edgeData;
-bool buffer=0;
 NodeData *nd[GPUS],*ndD[GPUS];
+int *d,*sizeManager;
+int n,batchSize=100000;
+vector<EdgeData>edgeData;
+CPURand r;
+int *rwD[GPUS];
+double totalTime=0;
 void loadGraph(){    
     r.init();mp.init();
     int u,v;n=0;
@@ -65,15 +62,10 @@ void deleteGraph(){
     deleteE(edges,batchSize,ndD);
     delete[] edges;
 }
-double totalTime=0;
-
-int *rwD[GPUS];
-
-void randomWalk(){
+void randomWalk(app a){
     //int *rw=new int[LEN*n];
-    Timer tt;//tt.restart();
-  //  float time=0;
-//    cerr<<tt.duration()<<endl;
+    Timer tt;
+  //  float time=0;;
     tt.restart();
     #pragma omp parallel for
     for(int g=0;g<GPUS;++g){
@@ -81,48 +73,27 @@ void randomWalk(){
         //if(BUFFER)resetKernel<<<BLKSZ,THDSZ>>>(n,ndD[g]);
         if(rwD[g]==NULL)cudaMalloc((void **)&rwD[g],(LEN*(n/GPUS+1))*sizeof(int));
         HE(cudaGetLastError());
-        
    //     for(int t=0;t<2;++t){
            // GPUTimer gT;gT.init();//cerr<<g<<" "<<n<<endl;
             cudaDeviceSynchronize();
-            randomWalkKernel<<<BLKSZ,THDSZ>>>(g,n,ndD[g],rwD[g],((ull)new char)+g*13/*abc,bbc*/);
+            if(a==app::deepwalk)deepwalkKernel<<<BLKSZ,THDSZ>>>(g,n,ndD[g],rwD[g],((ull)new char)+g*13/*abc,bbc*/);
+            else pprKernel<<<BLKSZ,THDSZ>>>(g,n,ndD[g],rwD[g],((ull)new char)+g*13);
             cudaDeviceSynchronize();
             HE(cudaGetLastError());
-         
           //  time=max(time,gT.finish());
      //   }
     }
-    totalTime+=tt.duration();//time/1000;
-  /*   #pragma omp parallel for
+    totalTime+=tt.duration();
+     #pragma omp parallel for
     for(int g=0;g<GPUS;++g){
         cudaSetDevice(g);
-        int lPos=1+n*g/GPUS,rPos=n*(g+1)/GPUS;//(rPos-lPos+1)
-        cudaMemcpy(rw+(lPos-1)*LEN,rwD[g],(LEN*n/4)*sizeof(int),cudaMemcpyDeviceToHost);
+        //int lPos=1+n*g/GPUS,rPos=n*(g+1)/GPUS;//(rPos-lPos+1)
+       // cudaMemcpy(rw+(lPos-1)*LEN,rwD[g],(LEN*n/4)*sizeof(int),cudaMemcpyDeviceToHost);
         cudaDeviceSynchronize();
     }
+    /*
    for(int i=0;i<=10;++i){
     for(int j=1;j<=80;++j)cout<<rw[i*80+j-1]<<" ";cout<<endl;}
-
-
-*/
-
+    */
    // delete[] rw;
-}
-int deepwalk(){
-    freopen("../dataset/AM","r",stdin);
-    Timer TT;TT.restart();
-    omp_set_num_threads(CPUTHD);
-    loadGraph();
-    randomWalk();
-    Timer T;T.restart();
- //   freopen("out.txt","w",stdout);
-    for(int i=0;i<10;++i){
-        insertGraph();
-        deleteGraph();
-        randomWalk();
-    }
-    cerr<<"Evaluation time: "<<T.duration()<<" s."<<endl;
-    cerr<<"Random walk in "<<totalTime<<" s."<<endl;
-    cerr<<"Total time: "<<TT.duration()<<" s."<<endl;
-    return 0;
 }

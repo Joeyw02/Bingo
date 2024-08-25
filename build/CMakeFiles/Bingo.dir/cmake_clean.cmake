@@ -2,8 +2,8 @@ file(REMOVE_RECURSE
   "Bingo"
   "Bingo.pdb"
   "CMakeFiles/Bingo.dir/cmake_device_link.o"
-  "CMakeFiles/Bingo.dir/src/apps/deepwalk.cu.o"
-  "CMakeFiles/Bingo.dir/src/apps/deepwalk.cu.o.d"
+  "CMakeFiles/Bingo.dir/src/apps.cu.o"
+  "CMakeFiles/Bingo.dir/src/apps.cu.o.d"
   "CMakeFiles/Bingo.dir/src/main.cpp.o"
   "CMakeFiles/Bingo.dir/src/main.cpp.o.d"
 )

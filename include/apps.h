@@ -1,2 +1,3 @@
 #pragma once
-int deepwalk();
+#include"type.h"
+int instance(app a);

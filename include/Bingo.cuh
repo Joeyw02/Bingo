@@ -3,6 +3,19 @@
 #include"type.h"
 #include"utils.cuh"
 #include"gpuMem.cuh"
+struct HASH{
+    int *a,*s,SZ;
+    void init(int SZ,int g){
+        this->SZ=SZ;
+        mp.apply(reinterpret_cast<void**>(&a),SZ*sizeof(int),g);
+        mp.apply(reinterpret_cast<void**>(&s),SZ*sizeof(int),g);
+    }
+    __device__ bool check(ull v){
+        ((v<<=2)^=19260817)%=SZ;
+        
+        return 0;
+    }
+}hs;
 struct NodeData{
     int oldSZ,SZ;  unsigned long long sum=0;//,LP;
     struct AliasElement {float p;char a,b;}__attribute__((packed));
@@ -32,8 +45,7 @@ struct NodeData{
         mp.apply(reinterpret_cast<void**>(&idx),SZ*BITS*sizeof(int),g);
         mp.apply(reinterpret_cast<void**>(&edge),SZ*sizeof(Edge),g);
        // initBuffer(g);
-        //if(NODE2VEC)
-//        hs.init(SZ,g);
+        //if(NODE2VEC)hs.init(SZ,g);
     }
     void reMalloc(int SZ,int g){
         oldSZ=this->SZ;this->SZ=SZ;
@@ -142,14 +154,13 @@ struct NodeData{
             ans=edge[groupGet(i-BEG,res)].v;
         }
         else{
-            int id=rand(rdG,edgeSZ);if(id>=edgeSZ)--id; return edge[id].v;
+            int id=rand(rdG,edgeSZ);
             while(!(edge[id].weight&(1ull<<i))){id=rand(rdG,edgeSZ);if(id>=edgeSZ)--id;}
             ans=edge[id].v;
         }
        // if(BUFFER)addingBuffer(ans);
         return ans;
     }
-    
     //Buffer
     /*
         bool emptyBuffer=1,fullBuffer=1;

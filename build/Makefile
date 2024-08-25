@@ -129,29 +129,29 @@ Bingo/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Bingo.dir/build.make CMakeFiles/Bingo.dir/build
 .PHONY : Bingo/fast
 
-src/apps/deepwalk.o: src/apps/deepwalk.cu.o
-.PHONY : src/apps/deepwalk.o
+src/apps.o: src/apps.cu.o
+.PHONY : src/apps.o
 
 # target to build an object file
-src/apps/deepwalk.cu.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Bingo.dir/build.make CMakeFiles/Bingo.dir/src/apps/deepwalk.cu.o
-.PHONY : src/apps/deepwalk.cu.o
+src/apps.cu.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Bingo.dir/build.make CMakeFiles/Bingo.dir/src/apps.cu.o
+.PHONY : src/apps.cu.o
 
-src/apps/deepwalk.i: src/apps/deepwalk.cu.i
-.PHONY : src/apps/deepwalk.i
+src/apps.i: src/apps.cu.i
+.PHONY : src/apps.i
 
 # target to preprocess a source file
-src/apps/deepwalk.cu.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Bingo.dir/build.make CMakeFiles/Bingo.dir/src/apps/deepwalk.cu.i
-.PHONY : src/apps/deepwalk.cu.i
+src/apps.cu.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Bingo.dir/build.make CMakeFiles/Bingo.dir/src/apps.cu.i
+.PHONY : src/apps.cu.i
 
-src/apps/deepwalk.s: src/apps/deepwalk.cu.s
-.PHONY : src/apps/deepwalk.s
+src/apps.s: src/apps.cu.s
+.PHONY : src/apps.s
 
 # target to generate assembly for a file
-src/apps/deepwalk.cu.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Bingo.dir/build.make CMakeFiles/Bingo.dir/src/apps/deepwalk.cu.s
-.PHONY : src/apps/deepwalk.cu.s
+src/apps.cu.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Bingo.dir/build.make CMakeFiles/Bingo.dir/src/apps.cu.s
+.PHONY : src/apps.cu.s
 
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
@@ -186,9 +186,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... Bingo"
-	@echo "... src/apps/deepwalk.o"
-	@echo "... src/apps/deepwalk.i"
-	@echo "... src/apps/deepwalk.s"
+	@echo "... src/apps.o"
+	@echo "... src/apps.i"
+	@echo "... src/apps.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
