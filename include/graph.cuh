@@ -8,7 +8,7 @@
 using namespace std;
 NodeData *nd[GPUS],*ndD[GPUS];
 int *d,*sizeManager;
-int n,batchSize=100000;
+int n;
 vector<EdgeData>edgeData;
 CPURand r;
 int *rwD[GPUS];
@@ -39,45 +39,61 @@ void loadGraph(){
     delete[] edges;
 }
 void insertGraph(){
-    Edges *edges=new Edges[batchSize];
+    Edges *edges=new Edges[BATCHSIZE];
     int lastAmount=edgeData.size();
-    for(int i=0;i<batchSize;++i){
+    for(int i=0;i<BATCHSIZE;++i){
         int pos=r.rd(lastAmount);
         int u=edgeData[pos].u,v=edgeData[pos].v;
         edgeData.push_back((EdgeData){u,v,d[u]++});
         edges[i]=(Edges){u,v,(unsigned)d[u]};
     }
-    insert(edges,batchSize,nd,ndD,d,sizeManager);
+    insert(edges,BATCHSIZE,nd,ndD,d,sizeManager);
     delete[] edges;
 }
 void deleteGraph(){
-    Deleted *edges=new Deleted[batchSize];
-    for(int i=0;i<batchSize;++i){
+    Deleted *edges=new Deleted[BATCHSIZE];
+    for(int i=0;i<BATCHSIZE;++i){
         int pos=r.rd(edgeData.size());
         while(edgeData[pos].nodeIdu==-1)pos=r.rd(edgeData.size());
         int u=edgeData[pos].u,idu=edgeData[pos].nodeIdu;
         edges[i]=(Deleted){u,idu};
         edgeData[pos].nodeIdu=-1;
     }
-    deleteE(edges,batchSize,ndD);
+    deleteE(edges,BATCHSIZE,ndD);
     delete[] edges;
 }
 void randomWalk(app a){
+    ll len=LEN*(n/GPUS+1);
+    if(a==app::sampling)len=BATCHSIZE;
     //int *rw=new int[LEN*n];
     Timer tt;
-  //  float time=0;;
+    //float time=0;;
     tt.restart();
     #pragma omp parallel for
     for(int g=0;g<GPUS;++g){
         cudaSetDevice(g);
         //if(BUFFER)resetKernel<<<BLKSZ,THDSZ>>>(n,ndD[g]);
-        if(rwD[g]==NULL)cudaMalloc((void **)&rwD[g],(LEN*(n/GPUS+1))*sizeof(int));
+        if(rwD[g]==NULL)cudaMalloc((void **)&rwD[g],len*sizeof(int));
         HE(cudaGetLastError());
    //     for(int t=0;t<2;++t){
            // GPUTimer gT;gT.init();//cerr<<g<<" "<<n<<endl;
             cudaDeviceSynchronize();
-            if(a==app::deepwalk)deepwalkKernel<<<BLKSZ,THDSZ>>>(g,n,ndD[g],rwD[g],((ull)new char)+g*13/*abc,bbc*/);
-            else pprKernel<<<BLKSZ,THDSZ>>>(g,n,ndD[g],rwD[g],((ull)new char)+g*13);
+            switch (a){
+                case app::deepwalk:
+                    deepwalkKernel<<<BLKSZ,THDSZ>>>(g,n,ndD[g],rwD[g],((ull)new char)+g*13/*abc,bbc*/);
+                    break;
+                case app::node2vec:
+                    break;
+                case app::ppr:
+                    pprKernel<<<BLKSZ,THDSZ>>>(g,n,ndD[g],rwD[g],((ull)new char)+g*13);
+                    break;
+                case app::sampling:
+                    samplingKernel<<<BLKSZ,THDSZ>>>(g,n,ndD[g],rwD[g],((ull)new char)+g+13);
+                    break;
+                default:
+                    deepwalkKernel<<<BLKSZ,THDSZ>>>(g,n,ndD[g],rwD[g],((ull)new char)+g*13);
+                    break;
+            }
             cudaDeviceSynchronize();
             HE(cudaGetLastError());
           //  time=max(time,gT.finish());

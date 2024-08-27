@@ -232,6 +232,26 @@ __global__ void pprKernel(int gId,int n, NodeData *ndD, int *rwD,ull seed){
         pos= __shfl_sync(0xffffffff,pos,0);
     }
 }
+__global__ void samplingKernel(int gId,int n, NodeData *ndD, int *rwD,ull seed){
+    int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    int bg=(BATCHSIZE*gId/GPUS)+1;
+    ndD[0].edgeSZ=bg;
+    RandomGenerator rdG;
+    rdG.init((19260817^seed)+tid,tid);
+    int pos,ed=BATCHSIZE*(gId+1)/GPUS;
+    if(!(tid&31))pos=atomicAdd(&ndD[0].edgeSZ,32);
+    pos= __shfl_sync(0xffffffff,pos,0);
+    while(pos<=ed){
+        int u=rand(rdG,n);
+        if(u<=ed){
+            int *rw=rwD+(u-bg);
+            (*(rw))=ndD[u].sample(rdG);
+        }
+        __syncwarp();
+        if(!(tid&31))pos=atomicAdd(&ndD[0].edgeSZ,32);
+        pos= __shfl_sync(0xffffffff,pos,0);
+    }
+}
 /*
 __global__ void resetKernel(int n,NodeData *ndD){
     int tid = blockIdx.x * blockDim.x + threadIdx.x,totalT=blockDim.x*gridDim.x;

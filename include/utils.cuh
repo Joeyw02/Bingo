@@ -4,6 +4,7 @@
 #include<curand_kernel.h>
 #include<cstdlib>
 #include"type.h"
+#include"api.h"
 using namespace std;
 #define HE(err) (handleError(err, __FILE__, __LINE__))
 inline __device__ void swAp(unsigned a,unsigned b){a^=b^=a^=b;}
@@ -39,6 +40,10 @@ public:
         return tmp;
     }
 };
+struct CPURand{
+    void init(){srand((unsigned long long)new char);}
+    int rd(int x){return (((1ll*rand())<<15)+rand())%x;}
+};
 struct RandomGenerator {
     curandState state;
     __device__ void init(ull seed,int tid) {
@@ -48,13 +53,10 @@ struct RandomGenerator {
         return curand_uniform(&state);
     }
 };
+__device__ inline float rand(RandomGenerator &rdG, float L){return (rdG.getRandomNumber())*(L-EPS);}
 static void handleError(cudaError_t err,const char *file,int line){
     if (err!=cudaSuccess){
         cerr<<cudaGetErrorString(err)<<" in "<<file<<" at line "<<line<<".\n";
         exit(EXIT_FAILURE);
     }
 }
-struct CPURand{
-    void init(){srand((unsigned long long)new char);}
-    int rd(int x){return (((1ll*rand())<<15)+rand())%x;}
-};

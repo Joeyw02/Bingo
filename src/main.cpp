@@ -12,8 +12,14 @@ int main(int argc, char* argv[]){
         case 'd':
             instance(app::deepwalk);
             break;
+        case 'n':
+            instance(app::node2vec);
+            break;
         case 'p':
             instance(app::ppr);
+            break;
+        case 's':
+            instance(app::sampling);
             break;
         default:
             instance(app::deepwalk);
