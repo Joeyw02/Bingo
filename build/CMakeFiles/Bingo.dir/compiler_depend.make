@@ -286,13 +286,13 @@ CMakeFiles/Bingo.dir/src/apps.cu.o: ../src/apps.cu \
   /usr/local/cuda/targets/x86_64-linux/include/curand_lognormal.h \
   /usr/local/cuda/targets/x86_64-linux/include/curand_poisson.h \
   /usr/local/cuda/targets/x86_64-linux/include/curand_discrete2.h \
+  ../include/api.h \
   ../include/graph.cuh \
   /usr/include/c++/11/vector \
   /usr/include/c++/11/bits/stl_uninitialized.h \
   /usr/include/c++/11/bits/stl_vector.h \
   /usr/include/c++/11/bits/stl_bvector.h \
   /usr/include/c++/11/bits/vector.tcc \
-  ../include/api.h \
   ../include/operation.cuh \
   ../include/Bingo.cuh \
   ../include/gpuMem.cuh \

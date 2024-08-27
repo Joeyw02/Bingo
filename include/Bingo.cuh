@@ -24,7 +24,6 @@ struct NodeData{
     struct Edge{int v;unsigned weight;}mx;
     int edgeSZ=0;Edge *edge,*oldEdge;
     __device__ inline void edgePush(int v,unsigned w){edge[edgeSZ++]=(Edge){v,w};}
-    __device__ inline float rand(RandomGenerator &rdG, float L){return (rdG.getRandomNumber())*(L-EPS);}
     int *group,*idx,*groupSZ,*oldGroup,*oldIdx;
     __device__ inline void groupPush(int i,int id){group[i*SZ+(groupSZ[i]++)]=id;}
     __device__ inline void idxSet(int i,int id,int pos){idx[i*SZ+id]=pos;}

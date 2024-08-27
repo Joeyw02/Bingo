@@ -1,8 +1,11 @@
 #pragma once
+#define ll long long
 #define ull unsigned long long
 enum class app{
     deepwalk,
-    ppr
+    node2vec,
+    ppr,
+    sampling
 };
 struct Edges{int u,v;unsigned weight;};
 inline bool cmpEdges(const Edges &a,const Edges &b){return a.u<b.u;}

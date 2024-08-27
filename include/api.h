@@ -8,6 +8,7 @@
 const int BEG=LOGT*0.5;
 const int BITS=LOGT-BEG;
 const int LEN=80;
+const int BATCHSIZE=100000;
 const int CPUTHD=16;
 const int GPUS=1;
 const bool NODE2VEC=0;
