@@ -65,7 +65,7 @@ void deleteGraph(){
 void randomWalk(app a){
     ll len=LEN*(n/GPUS+1);
     if(a==app::sampling)len=BATCHSIZE;
-    //int *rw=new int[LEN*n];
+    //int *rw=new int[LEN*10];
     Timer tt;
     //float time=0;;
     tt.restart();
@@ -83,6 +83,7 @@ void randomWalk(app a){
                     deepwalkKernel<<<BLKSZ,THDSZ>>>(g,n,ndD[g],rwD[g],((ull)new char)+g*13/*abc,bbc*/);
                     break;
                 case app::node2vec:
+                    node2vecKernel<<<BLKSZ,THDSZ>>>(g,n,ndD[g],rwD[g],((ull)new char)+g*13);
                     break;
                 case app::ppr:
                     pprKernel<<<BLKSZ,THDSZ>>>(g,n,ndD[g],rwD[g],((ull)new char)+g*13);
@@ -100,16 +101,14 @@ void randomWalk(app a){
      //   }
     }
     totalTime+=tt.duration();
-     #pragma omp parallel for
-    for(int g=0;g<GPUS;++g){
-        cudaSetDevice(g);
-        //int lPos=1+n*g/GPUS,rPos=n*(g+1)/GPUS;//(rPos-lPos+1)
-       // cudaMemcpy(rw+(lPos-1)*LEN,rwD[g],(LEN*n/4)*sizeof(int),cudaMemcpyDeviceToHost);
-        cudaDeviceSynchronize();
-    }
-    /*
-   for(int i=0;i<=10;++i){
-    for(int j=1;j<=80;++j)cout<<rw[i*80+j-1]<<" ";cout<<endl;}
-    */
-   // delete[] rw;
+    //#pragma omp parallel for
+    //for(int g=0;g<GPUS;++g){
+    //    cudaSetDevice(g);
+    //    int lPos=1+n*g/GPUS,rPos=n*(g+1)/GPUS;//(rPos-lPos+1)
+    //    cudaMemcpy(rw+(lPos-1)*LEN,rwD[g],(LEN*10)*sizeof(int),cudaMemcpyDeviceToHost);
+    //    cudaDeviceSynchronize();
+    //}
+    //for(int i=0;i<=10;++i){
+    //for(int j=1;j<=80;++j)cout<<rw[i*80+j-1]<<" ";cout<<endl;}
+    // delete[] rw;
 }

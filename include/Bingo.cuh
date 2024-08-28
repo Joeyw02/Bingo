@@ -3,19 +3,6 @@
 #include"type.h"
 #include"utils.cuh"
 #include"gpuMem.cuh"
-struct HASH{
-    int *a,*s,SZ;
-    void init(int SZ,int g){
-        this->SZ=SZ;
-        mp.apply(reinterpret_cast<void**>(&a),SZ*sizeof(int),g);
-        mp.apply(reinterpret_cast<void**>(&s),SZ*sizeof(int),g);
-    }
-    __device__ bool check(ull v){
-        ((v<<=2)^=19260817)%=SZ;
-        
-        return 0;
-    }
-}hs;
 struct NodeData{
     int oldSZ,SZ;  unsigned long long sum=0;//,LP;
     struct AliasElement {float p;char a,b;}__attribute__((packed));
@@ -31,7 +18,18 @@ struct NodeData{
     __device__ inline int groupBack(int i){return group[i*SZ+groupSZ[i]-1];}
     __device__ inline int idxGet(int i,int id){return idx[i*SZ+id];}
     int *num;
-//    HASH hs;
+    struct HASH{
+       int *a,*s,SZ;
+        void init(int SZ,int g){
+            this->SZ=SZ;
+            mp.apply(reinterpret_cast<void**>(&a),SZ*sizeof(int),g);
+            mp.apply(reinterpret_cast<void**>(&s),SZ*sizeof(int),g);
+        }
+        __device__ bool check(ull v){
+            ((v<<=2)^=19260817)%=SZ;
+            return 0;
+        }
+    }hs;
     void init(int SZ,int g){
         oldSZ=-1;
         this->SZ=SZ;

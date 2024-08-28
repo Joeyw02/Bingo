@@ -206,6 +206,42 @@ __global__ void deepwalkKernel(int gId,int n, NodeData *ndD, int *rwD,ull seed){
         pos= __shfl_sync(0xffffffff,pos,0);
     }
 }
+__global__ void node2vecKernel(int gId,int n, NodeData *ndD, int *rwD,ull seed){
+    int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    int bg=(n*gId/GPUS)+1;
+    ndD[0].edgeSZ=bg;
+    RandomGenerator rdG;
+    rdG.init((19260817^seed)+tid,tid);
+    int pos,ed=n*(gId+1)/GPUS;
+    if(!(tid&31))pos=atomicAdd(&ndD[0].edgeSZ,32);
+    pos= __shfl_sync(0xffffffff,pos,0);
+    float lim=max(IP,IQ);
+    while(pos<=ed){
+        int u=pos+(tid&31);
+        if(u<=ed){
+            int *rw=rwD+(u-bg)*LEN,w=-1;
+            (*rw)=u;
+            for(int j=1;j<LEN&&u!=-1;++j){
+                int tmp;
+                while(1){
+                    tmp=ndD[u].sample(rdG);
+                    if(tmp==-1)break;
+                    if(tmp==w){
+                        if(rand(rdG,lim)>IP)continue;
+                        break;
+                    }
+                    else if(ndD[u].hs.check(w)){break;}
+                    else {break;}
+                }
+                w=u;
+                (*(++rw))=u=tmp;
+            }
+        }
+        __syncwarp();
+        if(!(tid&31))pos=atomicAdd(&ndD[0].edgeSZ,32);
+        pos= __shfl_sync(0xffffffff,pos,0);
+    }
+}
 __global__ void pprKernel(int gId,int n, NodeData *ndD, int *rwD,ull seed){
     int tid = blockIdx.x * blockDim.x + threadIdx.x;
     int bg=(n*gId/GPUS)+1;
