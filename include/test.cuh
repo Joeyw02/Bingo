@@ -22,24 +22,24 @@ __global__ void countGraph(int n,NodeData *ndD,int *a,double *b,double *c,double
                 ++a[1];b11+=1;b12+=1+ndD[i].edgeSZ;
                 c[1]+=4+1;
                 d[1]+=x+1;
-                e[1]+=(log2[ndD[i].num[j]]+log2[ndD[i].edgeSZ])*4;
+                e[1]+=(log2[(int)ndD[i].num[j]]+log2[(int)ndD[i].edgeSZ])*4;
             }
             else if(ndD[i].num[j]*5<ndD[i].edgeSZ){
                 ++a[2];b31+=ndD[i].num[j]*2+1;b32+=ndD[i].num[j]+ndD[i].edgeSZ;
-                c[2]+=(log2[ndD[i].num[j]]+log2[ndD[i].num[j]+1])*4+1;
-                d[2]+=(log2[ndD[i].num[j]]+log2[ndD[i].num[j]+1])*x+1;
-                e[2]+=(log2[ndD[i].num[j]]+log2[ndD[i].edgeSZ])*4;
+                c[2]+=(log2[(int)ndD[i].num[j]]+log2[(int)ndD[i].num[j]+1])*4+1;
+                d[2]+=(log2[(int)ndD[i].num[j]]+log2[(int)ndD[i].num[j]+1])*x+1;
+                e[2]+=(log2[(int)ndD[i].num[j]]+log2[(int)ndD[i].edgeSZ])*4;
             }
             else if(ndD[i].num[j]>ndD[i].edgeSZ*0.5){
                 ++a[3];
                 c[3]+=1;
                 d[3]+=1;
-                e[3]+=(log2[ndD[i].num[j]]+log2[ndD[i].edgeSZ])*4;
+                e[3]+=(log2[(int)ndD[i].num[j]]+log2[ndD[i].edgeSZ])*4;
             }
             else{
-                c[0]+=(log2[ndD[i].num[j]]+log2[ndD[i].edgeSZ])*4+1;
-                d[0]+=(log2[ndD[i].num[j]]+log2[ndD[i].edgeSZ])*x+1;
-                e[0]+=(log2[ndD[i].num[j]]+log2[ndD[i].edgeSZ])*4;
+                c[0]+=(log2[(int)ndD[i].num[j]]+log2[ndD[i].edgeSZ])*4+1;
+                d[0]+=(log2[(int)ndD[i].num[j]]+log2[ndD[i].edgeSZ])*x+1;
+                e[0]+=(log2[(int)ndD[i].num[j]]+log2[ndD[i].edgeSZ])*4;
             }
         }
     }

@@ -33,7 +33,8 @@ void loadGraph(){
     #pragma omp parallel for
     for(int i=0;i<amount;++i){
         int u=edgeData[i].u,v=edgeData[i].v;
-        edges[i]=(Edges){u,v,(unsigned)d[v]};
+        if(tp==wtype::Int)edges[i]=(Edges){u,v,(float)d[v]};
+        else edges[i]=(Edges){u,v,(float)(d[v]+r.rd(100)*.01)};
     }
     build(edges,amount,nd,ndD,d,&sizeManager,n);
     delete[] edges;
@@ -45,7 +46,8 @@ void insertGraph(){
         int pos=r.rd(lastAmount);
         int u=edgeData[pos].u,v=edgeData[pos].v;
         edgeData.push_back((EdgeData){u,v,d[u]++});
-        edges[i]=(Edges){u,v,(unsigned)d[u]};
+        if(tp==wtype::Int)edges[i]=(Edges){u,v,(float)d[v]};
+        else edges[i]=(Edges){u,v,(float)(d[v]+r.rd(100)*.01)};
     }
     insert(edges,BATCHSIZE,nd,ndD,d,sizeManager);
     delete[] edges;

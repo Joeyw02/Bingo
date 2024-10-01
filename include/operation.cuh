@@ -53,7 +53,6 @@ void build(Edges *edges,int amount,NodeData **nd,NodeData **ndD,int *d,int **siz
     }
     vector<int>tmp;
     for(int i=0;i<amount;++i)if((!i)||edges[i].u!=edges[i-1].u)tmp.push_back(i);
-    
     int *beginD[GPUS];float time=0;
     #pragma omp parallel for
     for(int g=0;g<GPUS;++g){
@@ -166,7 +165,8 @@ void deleteE(Deleted *edges,int amount,NodeData **ndD){
     for(int g=0;g<GPUS;++g){
         cudaSetDevice(g);
         cudaMalloc((void **)&beginD[g],tmp.size()*sizeof(int));
-        cudaMemcpy(beginD[g],tmp.data(),tmp.size()*sizeof(int),cudaMemcpyHostToDevice);  ttt.restart();
+        cudaMemcpy(beginD[g],tmp.data(),tmp.size()*sizeof(int),cudaMemcpyHostToDevice);
+        ttt.restart();
         cudaDeviceSynchronize();
        // GPUTimer gT;gT.init();
         deleteKernel<<<BLKSZ,THDSZ>>>(tmp.size()-1,ndD[g],edgesD[g],beginD[g]);

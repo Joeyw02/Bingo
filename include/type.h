@@ -7,7 +7,8 @@ enum class app{
     ppr,
     sampling
 };
-struct Edges{int u,v;unsigned weight;};
+enum class wtype{Int,Float};
+struct Edges{int u,v;float weight;};
 inline bool cmpEdges(const Edges &a,const Edges &b){return a.u<b.u;}
 struct EdgeData{int u,v,nodeIdu;};
 struct Deleted{int u,id;};

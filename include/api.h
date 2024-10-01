@@ -16,3 +16,4 @@ const bool BUFFER=0;
 const float TP=0.0125;//termination probability
 const float IP=1./P;
 const float IQ=1./Q;
+const wtype tp=wtype::Float;
