@@ -1,8 +1,11 @@
 #pragma once
 #include<cstdio>
+#include<cstring>
+#include<vector>
 #include"type.h"
 #include"Bingo.cuh"
 using namespace std;
+//estimate group memory
 __global__ void countGraph(int n,NodeData *ndD,int *a,double *b,double *c,double *d,double *e,int *log2){
     if(threadIdx.x!=0)return;
     a[0]=a[1]=a[2]=a[3]=0;
@@ -72,4 +75,65 @@ void countGraph(int n,NodeData *ndD){
     cout<<c[0]<<" "<<c[1]<<" "<<c[2]<<" "<<c[3]<<" "<<c[0]+c[1]+c[2]+c[3]<<endl;
     cout<<d[0]<<" "<<d[1]<<" "<<d[2]<<" "<<d[3]<<" "<<d[0]+d[1]+d[2]+d[3]<<endl;
     cout<<e[0]<<" "<<e[1]<<" "<<e[2]<<" "<<e[3]<<" "<<e[0]+e[1]+e[2]+e[3]<<endl;
+}
+//count trans
+//0: dense 1: r 2:s 3: one
+int* oldcnt[LOGT+1],*cnt[LOGT+1];
+int ans[4][4]={0};
+void initTrans(int n){
+    for(int i=0;i<=LOGT;++i)oldcnt[i]=new int[n+1],cnt[i]=new int[n+1];
+}
+void recordOld(int n,int *d,vector<EdgeData>&edge){
+    for(int i=0;i<=LOGT;++i)memset(oldcnt[i],0,sizeof(oldcnt[i])),memset(cnt[i],0,sizeof(cnt[i]));
+    for(int i=0;i<edge.size();++i)
+    if(edge[i].nodeIdu!=-1){
+        int u=edge[i].u;
+        ++oldcnt[LOGT][u];
+        int w=d[edge[i].v];
+        for(int j=0;j<LOGT;++j)
+        if(w&(1<<j))++oldcnt[j][u];
+    }
+    for(int j=0;j<LOGT;++j)
+    for(int i=0;i<=n;++i)
+    if(oldcnt[j][i]<=1)oldcnt[j][i]=3;
+    else if(oldcnt[j][i]>0.45*oldcnt[LOGT][i])
+    oldcnt[j][i]=0;
+    else if(oldcnt[j][i]<0.2*oldcnt[LOGT][i])
+    oldcnt[j][i]=2;
+    else oldcnt[j][i]=1;
+}
+void recordNew(int n,int *d,vector<EdgeData>&edge){
+    for(int i=0;i<edge.size();++i)
+    if(edge[i].nodeIdu!=-1){
+        int u=edge[i].u;
+        ++cnt[LOGT][u];
+        int w=d[edge[i].v];
+        for(int j=0;j<LOGT;++j)
+        if(w&(1<<j))++cnt[j][u];
+    }
+    for(int j=0;j<LOGT;++j)
+    for(int i=0;i<=n;++i)
+    if(oldcnt[j][i]==0&&cnt[j][i]>0.225*cnt[LOGT][i])cnt[j][i]=0;
+    else if(oldcnt[j][i]==2&&cnt[j][i]<0.4*cnt[LOGT][i]&&cnt[j][i]!=1)cnt[j][i]=2;
+    else if(oldcnt[j][i]==1&&cnt[j][i]>0.1*cnt[LOGT][i]&&cnt[j][i]<0.675*cnt[LOGT][i])cnt[j][i]=1;
+    else if(cnt[j][i]<=1)cnt[j][i]=3;
+    else if(cnt[j][i]>0.45*cnt[LOGT][i])
+    cnt[j][i]=0;
+    else if(cnt[j][i]<0.2*cnt[LOGT][i])
+    cnt[j][i]=2;
+    else cnt[j][i]=1;
+    for(int j=0;j<LOGT;++j)
+    for(int i=0;i<=n;++i){
+        if(oldcnt[LOGT][i]<5&&cnt[LOGT][i]<5)continue;
+        if(oldcnt[j][i]!=cnt[j][i])
+        ++ans[oldcnt[j][i]][cnt[j][i]];
+    }
+}
+void printTrans(){
+    puts("-------------------------");
+    for(int i=0;i<=3;++i){
+        for(int j=0;j<=3;++j)printf("%lf ",ans[i][j]/(10.*2*BATCHSIZE));
+        puts("");
+    }
+    puts("-------------------------");
 }

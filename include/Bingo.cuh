@@ -43,7 +43,7 @@ struct NodeData{
         mp.apply(reinterpret_cast<void**>(&idx),SZ*BITS*sizeof(int),g);
         mp.apply(reinterpret_cast<void**>(&edge),SZ*sizeof(Edge),g);
        // initBuffer(g);
-        //if(NODE2VEC)hs.init(SZ,g);
+        if(NODE2VEC)hs.init(SZ,g);
     }
     void reMalloc(int SZ,int g){
         oldSZ=this->SZ;this->SZ=SZ;
@@ -157,8 +157,8 @@ struct NodeData{
             ans=edge[groupGet(i-BEG,res)].v;
         }
         else if(i<BEG){
-            int id=rand(rdG,edgeSZ);
-            while(!(((unsigned)edge[id].weight)&(1ull<<i))){id=rand(rdG,edgeSZ);if(id>=edgeSZ)--id;}
+            int id=rand(rdG,edgeSZ);id=rand(rdG,edgeSZ);
+//            while(!(((unsigned)edge[id].weight)&(1ull<<i))){id=rand(rdG,edgeSZ);if(id>=edgeSZ)--id;}
             ans=edge[id].v;
         }
         else{

@@ -30,7 +30,7 @@ void build(Edges *edges,int amount,NodeData **nd,NodeData **ndD,int *d,int **siz
     }
     #pragma omp parallel for
     for(int g=0;g<GPUS;++g){
-        cudaSetDevice(g);
+        cudaSetDevice((g+1)%GPUTOT);
         //cudaMalloc((void**)&LD[g],128*sizeof(int));
         //cudaMemcpyAsync(LD[g],L,128*sizeof(int),cudaMemcpyHostToDevice);
         for(int i=1;i<=n;++i)nd[g][i].init((*sizeManager)[i],g);HE(cudaGetLastError());
@@ -47,7 +47,7 @@ void build(Edges *edges,int amount,NodeData **nd,NodeData **ndD,int *d,int **siz
     delete[] sortTMP;
     #pragma omp parallel for
     for(int g=0;g<GPUS;++g){
-       cudaSetDevice(g);
+       cudaSetDevice((g+1)%GPUTOT);
        cudaMalloc((void **)&edgesD[g],amount*sizeof(Edges));
        cudaMemcpyAsync(edgesD[g],edges,amount*sizeof(Edges),cudaMemcpyHostToDevice);
     }
@@ -56,7 +56,7 @@ void build(Edges *edges,int amount,NodeData **nd,NodeData **ndD,int *d,int **siz
     int *beginD[GPUS];float time=0;
     #pragma omp parallel for
     for(int g=0;g<GPUS;++g){
-        cudaSetDevice(g);
+        cudaSetDevice((g+1)%GPUTOT);
         cudaMalloc((void **)&beginD[g],tmp.size()*sizeof(int));
         cudaMemcpyAsync(beginD[g],tmp.data(),tmp.size()*sizeof(int),cudaMemcpyHostToDevice);
         cudaDeviceSynchronize();
@@ -88,13 +88,13 @@ __global__ void insertKernel(int n,NodeData *ndD,Edges *edgesD,int *beginD){
         pos= __shfl_sync(0xffffffff,pos,0);
     }
 }
-void insert(Edges *edges,int amount,NodeData **nd,NodeData **ndD,int *d,int *sizeManager){
+void insert(Edges *edges,int amount,NodeData **nd,NodeData **ndD,int *d,int *sizeManager){//cerr<<1<<endl;
     ttt.restart();
     stable_sort(edges,edges+amount,cmpEdges);
     Edges *edgesD[GPUS];
     #pragma omp parallel for
     for(int g=0;g<GPUS;++g){
-        cudaSetDevice(g);
+        cudaSetDevice((g+1)%GPUTOT);
         cudaMalloc((void **)&edgesD[g],amount*sizeof(Edges));
         cudaMemcpyAsync(edgesD[g],edges,amount*sizeof(Edges),cudaMemcpyHostToDevice);
     }
@@ -107,7 +107,7 @@ void insert(Edges *edges,int amount,NodeData **nd,NodeData **ndD,int *d,int *siz
         while(sizeManager[u]<d[u])sizeManager[u]<<=1;
         #pragma omp parallel for
         for(int g=0;g<GPUS;++g){
-            cudaSetDevice(g);
+            cudaSetDevice((g+1)%GPUTOT);
             cudaMemcpy(nd[g]+u,ndD[g]+u,sizeof(NodeData),cudaMemcpyDeviceToHost);
             nd[g][u].reMalloc(sizeManager[u],g);
             cudaMemcpyAsync(ndD[g]+u,nd[g]+u,sizeof(NodeData),cudaMemcpyHostToDevice);
@@ -120,7 +120,7 @@ void insert(Edges *edges,int amount,NodeData **nd,NodeData **ndD,int *d,int *siz
    ttt.restart();
     #pragma omp parallel for
     for(int g=0;g<GPUS;++g){
-        cudaSetDevice(g);
+        cudaSetDevice((g+1)%GPUTOT);
         cudaMalloc((void **)&beginD[g],tmp.size()*sizeof(int));
         cudaMemcpy(beginD[g],tmp.data(),tmp.size()*sizeof(int),cudaMemcpyHostToDevice);
         cudaDeviceSynchronize();
@@ -152,7 +152,7 @@ void deleteE(Deleted *edges,int amount,NodeData **ndD){
     Deleted *edgesD[GPUS];
     #pragma omp parallel for
     for(int g=0;g<GPUS;++g){
-        cudaSetDevice(g);
+        cudaSetDevice((g+1)%GPUTOT);
         cudaMalloc((void **)&edgesD[g],amount*sizeof(Deleted));
         cudaMemcpyAsync(edgesD[g],edges,amount*sizeof(Deleted),cudaMemcpyHostToDevice);
     }
@@ -163,7 +163,7 @@ void deleteE(Deleted *edges,int amount,NodeData **ndD){
     //float time=0;
     #pragma omp parallel for
     for(int g=0;g<GPUS;++g){
-        cudaSetDevice(g);
+        cudaSetDevice((g+1)%GPUTOT);
         cudaMalloc((void **)&beginD[g],tmp.size()*sizeof(int));
         cudaMemcpy(beginD[g],tmp.data(),tmp.size()*sizeof(int),cudaMemcpyHostToDevice);
         ttt.restart();

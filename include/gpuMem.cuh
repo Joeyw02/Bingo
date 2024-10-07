@@ -1,6 +1,6 @@
 #pragma once
 #include"api.h"
-#define MEMBLOCK 1048576000
+#define MEMBLOCK 104857600
 class MemPool{
 private:
     char *p[GPUS];
@@ -13,7 +13,7 @@ public:
     void init(){
         #pragma omp parallel for
         for(int g=0;g<GPUS;++g){
-            cudaSetDevice(g);
+            cudaSetDevice((g+1)%GPUTOT);
             init(g);
         }
     }

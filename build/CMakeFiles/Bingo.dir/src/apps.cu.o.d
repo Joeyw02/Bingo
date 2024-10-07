@@ -284,19 +284,19 @@ CMakeFiles/Bingo.dir/src/apps.cu.o : /home/pw346/Bingo/src/apps.cu \
     /usr/local/cuda/bin/../targets/x86_64-linux/include/curand_poisson.h \
     /usr/local/cuda/bin/../targets/x86_64-linux/include/curand_discrete2.h \
     /home/pw346/Bingo/include/api.h \
-    /home/pw346/Bingo/include/graph.cuh \
+    /home/pw346/Bingo/include/test.cuh \
     /usr/include/c++/11/vector \
     /usr/include/c++/11/bits/stl_uninitialized.h \
     /usr/include/c++/11/bits/stl_vector.h \
     /usr/include/c++/11/bits/stl_bvector.h \
     /usr/include/c++/11/bits/vector.tcc \
-    /home/pw346/Bingo/include/operation.cuh \
     /home/pw346/Bingo/include/Bingo.cuh \
     /home/pw346/Bingo/include/gpuMem.cuh \
+    /home/pw346/Bingo/include/graph.cuh \
+    /home/pw346/Bingo/include/operation.cuh \
     /usr/include/c++/11/algorithm \
     /usr/include/c++/11/bits/stl_algo.h \
     /usr/include/c++/11/bits/algorithmfwd.h \
     /usr/include/c++/11/bits/stl_heap.h \
     /usr/include/c++/11/bits/stl_tempbuf.h \
-    /usr/include/c++/11/bits/uniform_int_dist.h \
-    /home/pw346/Bingo/include/test.cuh
+    /usr/include/c++/11/bits/uniform_int_dist.h
