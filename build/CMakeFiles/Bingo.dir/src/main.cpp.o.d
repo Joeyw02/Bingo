@@ -121,4 +121,5 @@ CMakeFiles/Bingo.dir/src/main.cpp.o: /home/pw346/Bingo/src/main.cpp \
  /usr/include/c++/11/bits/basic_ios.tcc \
  /usr/include/c++/11/bits/ostream.tcc /usr/include/c++/11/istream \
  /usr/include/c++/11/bits/istream.tcc /home/pw346/Bingo/include/apps.h \
+ /usr/include/c++/11/cstring /usr/include/string.h /usr/include/strings.h \
  /home/pw346/Bingo/include/type.h

@@ -1,3 +1,4 @@
 #pragma once
-#include"type.h"
-int instance(app a);
+#include <cstring>
+#include "type.h"
+int instance(app a, utype utp, std::string s);

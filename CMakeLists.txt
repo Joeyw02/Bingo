@@ -21,7 +21,7 @@ endif()
 
 find_package(CUDA REQUIRED)
 
-set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -arch=sm_80 -O3") 
+set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -arch=sm_80 -O3 --maxrregcount=128") 
 
 set_target_properties(Bingo PROPERTIES
     CUDA_SEPARABLE_COMPILATION ON
