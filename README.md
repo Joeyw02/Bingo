@@ -14,3 +14,21 @@
 - cmake 3.20.2
 
 - cuda 12.3
+
+
+### 🛠️ Build Instructions
+
+```bash
+
+cd build
+
+cmake ..
+
+make
+```
+
+### Run the Program
+
+// Run the deepwalk Bingo with the AM graph
+
+./Bingo -g AM
