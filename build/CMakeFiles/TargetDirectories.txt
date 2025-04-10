@@ -1,3 +1,3 @@
-/home/pw346/Bingo/build/CMakeFiles/Bingo.dir
-/home/pw346/Bingo/build/CMakeFiles/edit_cache.dir
-/home/pw346/Bingo/build/CMakeFiles/rebuild_cache.dir
+/home/pw346/build/Bingo/build/CMakeFiles/Bingo.dir
+/home/pw346/build/Bingo/build/CMakeFiles/edit_cache.dir
+/home/pw346/build/Bingo/build/CMakeFiles/rebuild_cache.dir

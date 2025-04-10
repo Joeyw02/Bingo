@@ -55,7 +55,6 @@ struct NodeData
                 return 1;
             return 0;
         }
-<<<<<<< HEAD
     } hs;
     void init(int SZ, int g, int LOGT, char *TP, int bits)
     {
@@ -67,40 +66,6 @@ struct NodeData
         {
             mp.apply(reinterpret_cast<void **>(&num), (LOGT + 1) * sizeof(float), g);
             mp.apply(reinterpret_cast<void **>(&aliasTable), (LOGT + 1) * sizeof(AliasElement), g);
-=======
-    }hs;
-    void init(int SZ,int g){
-        oldSZ=-1;
-        this->SZ=SZ;
-        mx.weight=0;
-        //this->LP=LP;
-        mp.apply(reinterpret_cast<void**>(&aliasTable),(LOGT+2)*sizeof(AliasElement),g);
-        if(tp==wtype::Float)mp.apply(reinterpret_cast<void**>(&num),(LOGT+2)*sizeof(float),g);
-        else mp.apply(reinterpret_cast<void**>(&num),LOGT*sizeof(float),g);
-        mp.apply(reinterpret_cast<void**>(&groupSZ),BITS*sizeof(int),g);
-        mp.apply(reinterpret_cast<void**>(&group),SZ*BITS*sizeof(int),g);
-        mp.apply(reinterpret_cast<void**>(&idx),SZ*BITS*sizeof(int),g);
-        mp.apply(reinterpret_cast<void**>(&edge),SZ*sizeof(Edge),g);
-       // initBuffer(g);
-        if(NODE2VEC)hs.init(SZ,g);
-    }
-    void reMalloc(int SZ,int g){
-        oldSZ=this->SZ;this->SZ=SZ;
-        oldGroup=group,oldIdx=idx;
-        oldEdge=edge;
-        mp.apply(reinterpret_cast<void**>(&group),SZ*BITS*sizeof(int),g);
-        mp.apply(reinterpret_cast<void**>(&idx),SZ*BITS*sizeof(int),g);
-        mp.apply(reinterpret_cast<void**>(&edge),SZ*sizeof(Edge),g);
-    }
-    __device__ void copy(){
-        if(oldSZ==-1)return;
-        int tid=threadIdx.x&31;
-        for(int i=tid;i<oldSZ;i+=32)edge[i]=oldEdge[i];
-        for(int i=0;i<BITS;++i)
-        for(int j=tid;j<oldSZ;j+=32){
-            group[i*SZ+j]=oldGroup[i*oldSZ+j];
-            idx[i*SZ+j]=oldIdx[i*oldSZ+j];
->>>>>>> 981715a704c385ba213895fc06a00fd0792380b6
         }
         else
         {
@@ -286,7 +251,6 @@ struct NodeData
                 return edge[id].v;
             }
         }
-<<<<<<< HEAD
         else
         {
             int id = rand(s, edgeSZ);
@@ -322,11 +286,6 @@ struct NodeData
   /*      else if(i==LOGT){
             int id=rand(rdG,edgeSZ);float rej=rand(rdG,1);
             while(((edge[id].weight-((unsigned)edge[id].weight)))>rej){id=rand(rdG,edgeSZ);rej=rand(rdG,1);}
-=======
-        else if(i<BEG){
-            int id=rand(rdG,edgeSZ);id=rand(rdG,edgeSZ);
-//            while(!(((unsigned)edge[id].weight)&(1ull<<i))){id=rand(rdG,edgeSZ);if(id>=edgeSZ)--id;}
->>>>>>> 981715a704c385ba213895fc06a00fd0792380b6
             ans=edge[id].v;
         }
         else {
