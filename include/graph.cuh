@@ -52,6 +52,8 @@ void loadGraph()
         else
             edges[i] = (Edges){u, v, (float)(d[v] + r.rd(100) * .01)};
     }
+
+    // todo:debug
     build(edges, amount, nd, ndD, d, &sizeManager, n); // countGraph(n,ndD[0]);
     delete[] edges;
 }
@@ -90,6 +92,7 @@ void deleteGraph()
     deleteE(edges, BATCHSIZE, ndD);
     delete[] edges;
 }
+
 void randomWalk(app a)
 {
     ll len = LEN * (n / GPUS / PIECESIZE + 1);
@@ -97,6 +100,7 @@ void randomWalk(app a)
         len = BATCHSIZE;
     Timer tt; // float time=0;
     tt.restart();
+
 #pragma omp parallel for
     for (int g = 0; g < GPUS; ++g)
     {

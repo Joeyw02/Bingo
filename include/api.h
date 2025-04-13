@@ -13,7 +13,11 @@ const int LEN = 80;
 const int ORIGINAL = 16;
 const int CPUTHD = 16;
 const int GPUS = 1;
-const int GPUTOT = 4;
+
+// const int GPUTOT = 4;
+// 真实GPU数
+const int GPUTOT = 1;
+
 const int SAMPLINGSIZE = 100000;
 const bool BUFFER = 0;
 const bool DETAIL = 0;

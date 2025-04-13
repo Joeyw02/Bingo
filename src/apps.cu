@@ -9,7 +9,13 @@
 using namespace std;
 int instance(app a, utype utp, string DATASET)
 {
-    freopen(("../dataset/" + DATASET).c_str(), "r", stdin);
+    // freopen(("../dataset/" + DATASET).c_str(), "r", stdin);
+    FILE* fd = freopen(("../dataset/" + DATASET).c_str(), "r", stdin);
+    if (!fd) {
+        perror(("Failed to open file: ../dataset/" + DATASET).c_str());
+        exit(EXIT_FAILURE);
+    }
+    
     cerr << "Graph dataset: " << DATASET << "." << endl;
     if (a == app::node2vec)
         NODE2VEC = 1;
@@ -34,6 +40,8 @@ int instance(app a, utype utp, string DATASET)
     cerr << "Evaluation time: " << tt << " s." << endl;
     if (DETAIL)
         cerr << "Total time: " << TT.duration() << " s." << endl;
+    
+    // todo: 计算真实采样索引空间大小
     size_t free_mem, total_mem;
     cudaMemGetInfo(&free_mem, &total_mem);
     cerr << "Memory Consumption: " << ((total_mem - free_mem) / 1024. / 1024. - 4) / 1024. << " GB." << endl; // cerr<<xxx<<" "<<tt-totalTime-xxx<<endl;
