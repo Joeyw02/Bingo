@@ -32,6 +32,11 @@ void requestBuffer(int n, NodeData **nd, NodeData **ndD);
 int *groupNum[MAXLOG];
 void build(Edges *edges, int amount, NodeData **nd, NodeData **ndD, int *d, int **sizeManager, int n)
 {
+    // 检查真实设备数量
+    int actual_gpu_count = 0;
+    cudaGetDeviceCount(&actual_gpu_count);
+    cerr << "CUDA Device Count: " << actual_gpu_count << std::endl;
+
     timer.restart();
     for (int g = 0; g < GPUS; ++g)
         nd[g] = new NodeData[n + 1];

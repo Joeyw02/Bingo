@@ -1,7 +1,0 @@
-
-Fatbin elf code:
-================
-arch = sm_80
-code version = [1,7]
-host = linux
-compile_size = 64bit
